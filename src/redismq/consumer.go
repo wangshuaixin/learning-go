@@ -44,7 +44,7 @@ func (consumer *Consumer) MultiGet(length int) ([]*Package, error) {
 	}
 
 	// TODO maybe use transactions for rollback in case of errors?
-	reqs, err := consumer.Queue.redisClient.Pipelined(func(c *redis.Pipeline) error { // 使用了redis的Pipelined，批量传输
+	reqs, err := consumer.Queue.redisClient.Pipelined(func(c *redis.Pipeline) error { // 使用了redis的Pipelined，多个命令批量一次传输给redis
 		c.BRPopLPush(
 			queueInputKey(consumer.Queue.Name),
 			consumerWorkingQueueKey(consumer.Queue.Name, consumer.Name),
